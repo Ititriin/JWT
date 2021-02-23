@@ -1,15 +1,12 @@
 ### step 1
-
 sqlite3 db.sqlite
 
 ### step 2
-
 npm install
 npm init
 npm install express ejs dotenv body-parser jsonwebtoken bcryptjs sqlite3 morgan cookie-parser
 
 ### problems
-
 // Faili nimi index.js
 // Käivitamiseks: node index.js
 
@@ -27,12 +24,9 @@ npm install nodemon --save-dev
 
 
 ### uurida
-
 jtw.io debuggerit tokeni osas
 
 
-muud võimalused:
-
-sessiooni kasutamine PHP arendajate poolt (sessioon hoitakse serveris ja cookiesse salvestataksae sessiooniID, mis üles leitakse)
-
-salvestada, mis IP aadressilt token loodi (et kui token varastatakse, siis andmebaasis võrreldakse IP.-sid ja öeldakse IP mismatch)
+### muud võimalused:
+- sessiooni kasutamine PHP arendajate poolt (sessioon hoitakse serveris ja cookiesse salvestataksae sessiooniID, mis üles leitakse)
+- salvestada, mis IP aadressilt token loodi (kui token varastatakse, siis andmebaasis võrreldakse IP-sid ja öeldakse IP mismatch)

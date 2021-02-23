@@ -1,73 +1,70 @@
 const express = require('express');
-const bcryptjs = require('bcryptjs');
-const fs = require('fs');
-
-const verifyTokenAndUser = require('../middleware/verifyToken');
-const { setTokenToCookie } = require('../util');
-
-const { renderIndexPage, renderLoginPage, userLogin } = require('../controllers');
-
 const router = express.Router();
+const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user.model');
+const verifyTokenAndUser = require('../middleware/verifyToken');
 
-router.get('/', renderIndexPage);
-
-router.get('/login', renderLoginPage);
-
-router.post('/login', userLogin);
-
-router.get('/register', (req, res) => {
-    const { firstname, lastname, email, username, error } = req.query;
-    res.render('register', { firstname, lastname, email, username, error });
+router.get('/', (req, res) => {
+  res.render('index');
 });
 
-router.post('/register', (req, res) => {
-    const { firstname, lastname, email, username, password } = req.body;
-    let registrationSuccessful = false;
-    let existingUsers = [];
-    let error = undefined;
+router.get('/register', (req, res) => {
+  res.render('register');
+});
 
-    try {
-        let newUserID = 1;
-        if (fs.existsSync(process.env.DB_NAME)) {
-            existingUsers = JSON.parse(fs.readFileSync(process.env.DB_NAME));
-            const isUnique = existingUsers.find((user) => user.email === email || user.username === username) === undefined;
+router.post('/register', async (req, res) => {
+  const emailCheck = await User.findOne({ email: req.body.email });
+  if (emailCheck) return res.status(400).send('Email already in use!');
 
-            if (!isUnique) {
-                error = 'Given e-mail address and/or username is already taken!';
-            }
-            newUserID = existingUsers.length > 0 ? existingUsers[existingUsers.length - 1].id + 1 : 1;
-        }
+  const passwordHash = bcryptjs.hashSync(req.body.password);
 
-        const passwordHash = bcryptjs.hashSync(password);
-        const user = { id: newUserID, firstname, lastname, email, username, password: passwordHash };
+  const registrationData = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    password: passwordHash,
+    email: req.body.email,
+  });
 
-        existingUsers.push(user);
-        fs.writeFileSync(process.env.DB_NAME, JSON.stringify(existingUsers));
-        setTokenToCookie(res, { userId: newUserID, firstname, lastname, email, username });
-        registrationSuccessful = true;
-    } catch (error) { }
+  const token = jwt.sign({ id: req.body.email }, process.env.JWT_SECRET);
+  res.cookie('jwt_token', token, { httpOnly: true });
 
-    if (registrationSuccessful) {
-        res.redirect('/dashboard');
+  try {
+    await registrationData.save();
+    res.redirect('/dashboard');
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+router.get('/login', (req, res) => {
+  const { email, message } = req.query;
+  res.render('login', { email, message });
+});
+
+router.post('/login', async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    res.redirect(`/login?message=${encodeURIComponent('Wrong email!')}&email=${encodeURIComponent(email)}`);
+  }
+
+  try {
+    if (bcryptjs.compareSync(req.body.password, user.password)) {
+      const token = jwt.sign({ email: req.body.email }, process.env.JWT_SECRET);
+      res.cookie('jwt_token', token, { httpOnly: true });
+      res.redirect('/dashboard');
     } else {
-        res.render('register', {
-            firstname,
-            lastname,
-            email,
-            username,
-            error,
-        });
+      res.redirect(`/login?message=${encodeURIComponent('Wrong password!')}&email=${encodeURIComponent(email)}`);
     }
+  } catch {
+    res.status(500).send;
+  }
 });
 
 router.get('/dashboard', verifyTokenAndUser, (req, res) => {
-    const { user } = req;
-    res.render('dashboard', { user });
-});
-
-router.get('/logout', (req, res) => {
-    res.clearCookie('jwt_token');
-    res.redirect(`/login?message=${encodeURIComponent("You've been logged out!")}`);
+  res.render('dashboard');
 });
 
 module.exports = router;
