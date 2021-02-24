@@ -6,7 +6,7 @@ const renderLoginPage = (req, res) => {
 const userLogin = (req, res) => {
     const { username, password } = req.body;
     let isAuthenticated = false;
-    let authFailedMessage = 'Something went wrong!';
+    let authFailedMessage = 'Oops! Something went wrong!';
 
     try {
         if (fs.existsSync(process.env.DB_NAME)) {
