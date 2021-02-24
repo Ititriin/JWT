@@ -1,3 +1,7 @@
+const { getUserByUsername } = require('../../models');
+const { setTokenToCookie } = require('../../util');
+const bcryptjs = require('bcryptjs');
+
 const renderLoginPage = (req, res) => {
     const { username, message } = req.query;
     res.render('login', { username, message });
@@ -6,20 +10,20 @@ const renderLoginPage = (req, res) => {
 const userLogin = (req, res) => {
     const { username, password } = req.body;
     let isAuthenticated = false;
-    let authFailedMessage = 'Oops! Something went wrong!';
+    let authFailedMessage = 'No such user or incorrect password!';
+    let user = undefined;
 
     try {
-        if (fs.existsSync(process.env.DB_NAME)) {
-            const existingUsers = JSON.parse(fs.readFileSync(process.env.DB_NAME));
-            const user = existingUsers.find((user) => user.username === username);
+        user = getUserByUsername(username);
+    } catch (error) {
+        authFailedMessage = error.message;
+    }
 
-            if (user && bcryptjs.compareSync(password, user.password)) {
-                const { id, username, email, firstname, lastname } = user;
-                setTokenToCookie(res, { userId: id, username, email, firstname, lastname });
-                isAuthenticated = true;
-            }
-        }
-    } catch (error) { }
+    if (user && bcryptjs.compareSync(password, user.password)) {
+        const { id, username, email, firstname, lastname } = user;
+        setTokenToCookie(res, { userId: id, username });
+        isAuthenticated = true;
+    }
 
     if (isAuthenticated) {
         res.redirect('/dashboard');
