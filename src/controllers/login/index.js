@@ -1,40 +1,31 @@
-const { getUserByUsername } = require('../../models');
-const { setTokenToCookie } = require('../../util');
+const User = require('../../models/user.model');
 const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const renderLoginPage = (req, res) => {
-    const { username, message } = req.query;
-    res.render('login', { username, message });
+  const { email, message } = req.query;
+  res.render('login', { email, message });
 };
 
-const userLogin = (req, res) => {
-    const { username, password } = req.body;
-    let isAuthenticated = false;
-    let authFailedMessage = 'No such user or incorrect password!';
-    let user = undefined;
+const userLogin = async (req, res) => {
+  const { email, password } = req.body;
 
-    try {
-        user = getUserByUsername(username);
-    } catch (error) {
-        authFailedMessage = error.message;
-    }
+  const user = await User.findOne({ email }).lean();
 
-    if (user && bcryptjs.compareSync(password, user.password)) {
-        const { id, username, email, firstname, lastname } = user;
-        setTokenToCookie(res, { userId: id, username });
-        isAuthenticated = true;
-    }
+  if (!user) {
+    return res.redirect(`/login?message=${encodeURIComponent('Invalid email!')}&email=${encodeURIComponent(email)}`);
+  }
 
-    if (isAuthenticated) {
-        res.redirect('/dashboard');
-    } else {
-        res.redirect(
-            `/login?message=${encodeURIComponent(authFailedMessage)}&username=${encodeURIComponent(username)}`,
-        );
-    }
+  if (bcryptjs.compareSync(password, user.password)) {
+    const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+    res.cookie('jwt_token', token, { httpOnly: true });
+    return res.redirect('/dashboard');
+  }
+
+  res.redirect(`/login?message=${encodeURIComponent('Invalid password!')}&email=${encodeURIComponent(email)}`);
 };
 
 module.exports = {
-    renderLoginPage,
-    userLogin,
+  renderLoginPage,
+  userLogin,
 };
