@@ -10,3 +10,4 @@ const setTokenToCookie = (response, payload) => {
 module.exports = {
     setTokenToCookie,
 };
+
