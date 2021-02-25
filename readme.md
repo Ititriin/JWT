@@ -3,16 +3,13 @@
 ## Setup
 
 1. Install dependencies
-```bash
-npm install
-```
 
 ```bash
 npm install mongoose
 ```
 
 ```bash
-npm install npm init npm install express ejs dotenv body-parser jsonwebtoken bcryptjs sqlite3 morgan cookie-parser
+npm install npm init npm install express ejs dotenv body-parser jsonwebtoken bcryptjs morgan cookie-parser
 ```
 
 3. Rename `.env.example` to `.env`
