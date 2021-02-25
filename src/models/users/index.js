@@ -7,7 +7,7 @@ const dbPath = path.join(__dirname, "..", "..", "..", process.env.URI);
 
 const getUserById = (userId) => {
   try {
-    const existingUsers = await User.findOne({ email }).lean();
+    const existingUsers = await User.findOne({ id }).lean();
     return existingUsers.find((user) => user.id === userId);
   } catch (error) {
     throw new Error("Database connection failed!");
@@ -16,7 +16,7 @@ const getUserById = (userId) => {
 
 const getUserByUsername = (username) => {
   try {
-    const existingUsers = await User.findOne({ email }).lean();
+    const existingUsers = await User.findOne({ username }).lean();
     return existingUsers.find((user) => user.username === username);
   } catch (error) {
     throw new Error("Database connection failed!");
