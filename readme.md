@@ -1,32 +1,32 @@
-### step 1
-sqlite3 db.sqlite
+# NodeJS MVC app
 
-### step 2
+## Setup
+
+1. Install dependencies
+```bash
 npm install
-npm init
-npm install express ejs dotenv body-parser jsonwebtoken bcryptjs sqlite3 morgan cookie-parser
+```
 
-### problems
-// Faili nimi index.js
-// Käivitamiseks: node index.js
+```bash
+npm install mongoose
+```
 
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./database/db.sqlite');
+```bash
+npm install npm init npm install express ejs dotenv body-parser jsonwebtoken bcryptjs sqlite3 morgan cookie-parser
+```
 
-db.get('SELECT * FROM users WHERE id = ?;', [1], (error, user) => {
-    if (error) {
-        console.log(error);
-    }
-    console.log(user);
-});
+3. Rename `.env.example` to `.env`
 
-npm install nodemon --save-dev
+4. Start the server
+```bash
+npm run start
+```
 
+If you wish to start the server in **development mode** using `nodemon`
+```bash
+npm run start:dev
+```
 
-### uurida
-jtw.io debuggerit tokeni osas
-
-
-### muud võimalused:
-- sessiooni kasutamine PHP arendajate poolt (sessioon hoitakse serveris ja cookiesse salvestataksae sessiooniID, mis üles leitakse)
-- salvestada, mis IP aadressilt token loodi (kui token varastatakse, siis andmebaasis võrreldakse IP-sid ja öeldakse IP mismatch)
+5. Credits 
+Thanks goes to VIKK teachers for the base template and advice. Also thanks for team TAK20. :) 
+This is uploaded only for studying purposes. Nothing more to it. 
