@@ -1,31 +1,52 @@
-const User = require('../../models/user.model');
+const { getUserByUsername } = require('../../models');
+const { setTokenToCookie } = require('../../util');
 const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 const renderLoginPage = (req, res) => {
-  const { email, message } = req.query;
-  res.render('login', { email, message });
+    const { username, message } = req.query;
+    const { user } = req;
+
+    if (user) {
+        res.redirect('/dashboard');
+    } else {
+        res.render('login', { username, message });
+    }
 };
 
-const userLogin = async (req, res) => {
-  const { email, password } = req.body;
+const userLogin = (req, res) => {
+    const { username, password } = req.body;
+    let isAuthenticated = false;
+    let authFailedMessage = 'No such user or incorrect password!';
+    let user = undefined;
 
-  const user = await User.findOne({ email }).lean();
+    try {
+        user = getUserByUsername(username);
+    } catch (error) {
+        authFailedMessage = error.message;
+    }
 
-  if (!user) {
-    return res.redirect(`/login?message=${encodeURIComponent('Invalid email!')}&email=${encodeURIComponent(email)}`);
-  }
+    if (user && bcryptjs.compareSync(password, user.password)) {
+        const { id, username, email, firstname, lastname } = user;
+        setTokenToCookie(res, { userId: id, username });
+        isAuthenticated = true;
+    }
 
-  if (bcryptjs.compareSync(password, user.password)) {
-    const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
-    res.cookie('jwt_token', token, { httpOnly: true });
-    return res.redirect('/dashboard');
-  }
+    if (isAuthenticated) {
+        res.redirect('/dashboard');
+    } else {
+        res.redirect(
+            `/login?message=${encodeURIComponent(authFailedMessage)}&username=${encodeURIComponent(username)}`,
+        );
+    }
+};
 
-  res.redirect(`/login?message=${encodeURIComponent('Invalid password!')}&email=${encodeURIComponent(email)}`);
+const logout = (req, res) => {
+    res.clearCookie('jwt_token');
+    res.redirect(`/login?message=${encodeURIComponent("You've been logged out!")}`);
 };
 
 module.exports = {
-  renderLoginPage,
-  userLogin,
+    renderLoginPage,
+    userLogin,
+    logout,
 };
