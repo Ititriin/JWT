@@ -1,5 +1,7 @@
-const user = require('./users');
+const Product = require('./product.model');
+const User = require('./user.model');
 
 module.exports = {
-    ...user,
-}
+  Product,
+  User,
+};
