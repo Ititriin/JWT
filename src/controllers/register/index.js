@@ -3,10 +3,16 @@ const { setTokenToCookie } = require('../../util');
 
 const renderRegistrationPage = (req, res) => {
     const { firstname, lastname, email, username, error } = req.query;
-    res.render('register', { firstname, lastname, email, username, error });
+    const { user } = req;
+
+    if (user) {
+        res.redirect('/dashboard');
+    } else {
+        res.render('register', { firstname, lastname, email, username, error });
+    }
 };
 
-const registerUser = (req, res) => {
+const registerUser = async (req, res) => {
     const { firstname, lastname, email, username, password } = req.body;
 
     try {
