@@ -4,7 +4,7 @@ const { getUserById } = require('../../models');
 const verifyTokenAndUser = (req, res, next) => {
     const token = req.cookies['jwt_token'];
     let isAuthenticated = false;
-    let authFailedMessage = 'Authentication failed, please log in!';
+    let authFailedMessage = 'Autentimine ebaõnnestus, palun logige sisse!';
 
     try {
         if (token) {
@@ -18,7 +18,7 @@ const verifyTokenAndUser = (req, res, next) => {
         }
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
-            authFailedMessage = 'Session has expired, please log in!';
+            authFailedMessage = 'Sessioon aegus, logige end uuesti sisse!';
         }
         authFailedMessage = error.message;
     }

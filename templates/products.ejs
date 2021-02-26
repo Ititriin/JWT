@@ -8,8 +8,42 @@
 <body>
     <div class="container">
         <div class="text-center">
-            <h3>Products</h3>
+            <a href="/logout" class="btn btn-primary -5" role="button">Logi välja</a>
+            <a href="/dashboard" class="btn btn-primary -5" role="button">Home</a>
+            <a href="/products" class="btn btn-primary -5" role="button">Tooted</a>
         </div>
+    </div>
+    <div class="container">
+        <table class="table table-striped table-primary">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Emp Type</th>
+                    <th>Hourly Rate</th>
+                    <th>Total Hours</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%if (records.length>0){ %>
+                    <% records.forEach(function(row){ %>
+                        <tr>
+                            <td>
+                                <%= row.productName %>
+                            </td>
+                            <td>
+                                <%= row.size %>
+                            </td>
+
+                        </tr>
+                        <% })}else{ %>
+                            <tr>
+                                <td colspan="6">No Record Found</td>
+                            </tr>
+                            <% } %>
+            </tbody>
+        </table>
     </div>
 
     <%- include('./partials/scripts'); %>

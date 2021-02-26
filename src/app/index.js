@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const router = require('../routes');
 const mongoose = require('mongoose');
 
+
 const createApp = () => {
   const app = express();
   /* mongoose.connect(database.URI).then((db) => console.log("db is connected")).catch((err) => console.log(err)); */
@@ -27,6 +28,7 @@ const createApp = () => {
   // Router
   app.use(router);
   return app;
+
 };
 
 module.exports = createApp;

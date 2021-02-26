@@ -30,3 +30,9 @@ npm run start:dev
 5. Credits 
 Thanks goes to VIKK teachers for the base template and advice. Also thanks for team TAK20. :) 
 This is uploaded only for studying purposes.
+
+
+
+npm install --save isomorphic-fetch es6-promise
+
+npm install --save request

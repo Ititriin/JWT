@@ -20,13 +20,7 @@ const registerUser = async (req, res) => {
         setTokenToCookie(res, { userId: user.id, username });
         res.redirect('/dashboard');
     } catch (error) {
-        res.render('register', {
-            firstname,
-            lastname,
-            email,
-            username,
-            error: error.message,
-        });
+        res.render('register', { firstname, lastname, email, username, error: error.message, });
     }
 };
 

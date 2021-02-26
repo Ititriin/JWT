@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken');
 const verifyTokenAndUser = require('../middleware/verifyToken');
 
 const { User, Product } = require('.././models');
-const { renderLoginPage, userLogin } = require('../controllers');
+const products = Product.find({});
+const { renderLoginPage, userLogin, renderProductsPage } = require('../controllers');
 
 router.get('/', (req, res) => {
   res.render('index');
@@ -44,15 +45,26 @@ router.get('/login', renderLoginPage);
 router.post('/login', userLogin);
 
 router.get('/dashboard', verifyTokenAndUser, (req, res) => {
-  Product.find({}).exec(function (err, data) {
-    if (err) throw err;
-    res.render('dashboard', { title: 'Title', records: data });
-  });
+  res.render('dashboard');
 });
 
 router.get('/logout', (req, res) => {
   res.clearCookie('jwt_token');
   res.redirect(`/login?message=${encodeURIComponent("You have been logged out!")}`);
 });
+
+/* router.get('/products', (req, res) => {
+  res.render('products');
+}); */
+
+router.get('/', function(req, res, next) {
+  products.exec(function(err,data){
+if(err) throw err;
+res.render('index', { title: 'Employee Records', records:data });
+  });
+  
+});
+
+router.get('/products', renderProductsPage);
 
 module.exports = router;

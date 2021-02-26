@@ -6,15 +6,21 @@
 </head>
 
 <body>
-<div class="container">
-    <div class="text-center">
-        <h3><%= `Welcome${locals.user ? ', ' + user['firstname'] : ''}!` %></h3>
-        <a href="/logout" class="btn btn-primary -5" role="button">Log out</a>
-        <a href="/dashboard" class="btn btn-primary -5" role="button">dashboard</a>
-        <a href="/products" class="btn btn-primary -5" role="button">tooted</a>
+    <div class="container">
+        <div class="text-center">
+            <h3>
+                <%= `Tere${locals.user ? ', ' + user['firstname'] : '' }!` %>
+            </h3>
+            <a href="/logout" class="btn btn-primary -5" role="button">Logi välja</a>
+            <a href="/dashboard" class="btn btn-primary -5" role="button">Home</a>
+            <a href="/products" class="btn btn-primary -5" role="button">Tooted</a>
+        </div>
+        <div class="text-center">
+            <img src="https://st.depositphotos.com/1594920/1698/i/600/depositphotos_16982039-stock-photo-golden-shaded-british-shorthair-7.jpg" alt="a photo of a cat" />
+        </div>
     </div>
-</div>
 
-<%- include('./partials/scripts'); %>
+    <%- include('./partials/scripts'); %>
 </body>
+
 </html>
