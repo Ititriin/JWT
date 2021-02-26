@@ -1,52 +1,32 @@
-const { getUserByUsername } = require('../../models');
-const { setTokenToCookie } = require('../../util');
+const User = require('../../models/user.model');
+const username = require('../../models/user.model');
 const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const renderLoginPage = (req, res) => {
-    const { username, message } = req.query;
-    const { user } = req;
-
-    if (user) {
-        res.redirect('/dashboard');
-    } else {
-        res.render('login', { username, message });
-    }
+  const { username, message } = req.query;
+  console.log(req.query);
+  res.render('login', { username, message });
 };
 
-const userLogin = (req, res) => {
-    const { username, password } = req.body;
-    let isAuthenticated = false;
-    let authFailedMessage = 'No such user or incorrect password!';
-    let user = undefined;
+const userLogin = async (req, res) => {
+  const { username, password } = req.body;
 
-    try {
-        user = getUserByUsername(username);
-    } catch (error) {
-        authFailedMessage = error.message;
-    }
+  const user = await User.findOne({ username }).lean();
 
-    if (user && bcryptjs.compareSync(password, user.password)) {
-        const { id, username, email, firstname, lastname } = user;
-        setTokenToCookie(res, { userId: id, username });
-        isAuthenticated = true;
-    }
+  if (!user) {
+    return res.redirect(`/login?message=${encodeURIComponent('Invalid username!')}&username=${encodeURIComponent(username)}`);
+  }
 
-    if (isAuthenticated) {
-        res.redirect('/dashboard');
-    } else {
-        res.redirect(
-            `/login?message=${encodeURIComponent(authFailedMessage)}&username=${encodeURIComponent(username)}`,
-        );
-    }
-};
-
-const logout = (req, res) => {
-    res.clearCookie('jwt_token');
-    res.redirect(`/login?message=${encodeURIComponent("You've been logged out!")}`);
+  if (bcryptjs.compareSync(password, user.password)) {
+    const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET);
+    res.cookie('jwt_token', token, { httpOnly: true });
+    return res.redirect('/dashboard');
+  }
+  res.redirect(`/login?message=${encodeURIComponent('Invalid password!')}&password=${encodeURIComponent(username)}`);
 };
 
 module.exports = {
-    renderLoginPage,
-    userLogin,
-    logout,
+  renderLoginPage,
+  userLogin,
 };
