@@ -25,10 +25,11 @@ router.post('/register', async (req, res) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
+    username: req.body.username,
     password: passwordHash,
   });
 
-  const token = jwt.sign({ id: req.body.email }, process.env.JWT_SECRET);
+  const token = jwt.sign({ id: req.body.username }, process.env.JWT_SECRET);
   res.cookie('jwt_token', token, { httpOnly: true });
 
   try {
