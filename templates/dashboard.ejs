@@ -10,10 +10,11 @@
     <div class="text-center">
         <h3><%= `Welcome${locals.user ? ', ' + user['firstname'] : ''}!` %></h3>
         <a href="/logout" class="btn btn-primary -5" role="button">Log out</a>
+        <a href="/dashboard" class="btn btn-primary -5" role="button">dashboard</a>
+        <a href="/products" class="btn btn-primary -5" role="button">tooted</a>
     </div>
 </div>
 
 <%- include('./partials/scripts'); %>
 </body>
-
 </html>
