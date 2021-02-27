@@ -3,7 +3,7 @@ const renderDashboardPage = (req, res) => {
   console.log(user);
 
   if (!user) {
-    res.redirect(`/login?message=${encodeURIComponent("Please log in!")}`);
+    res.redirect(`/login?message=${encodeURIComponent("Palun logige sisse!")}`);
   } else {
     res.render("dashboard", { user });
   }

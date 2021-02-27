@@ -1,7 +1,6 @@
-const jwt = require('jsonwebtoken');
-
+const jwt = require("jsonwebtoken");
 const verifyTokenAndUser = (req, res, next) => {
-  const token = req.cookies['jwt_token'];
+  const token = req.cookies["jwt_token"];
 
   if (token) {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -9,7 +8,7 @@ const verifyTokenAndUser = (req, res, next) => {
 
     next();
   } else {
-    res.redirect(`/login?message=${encodeURIComponent('Please login!')}`);
+    res.redirect(`/login?message=${encodeURIComponent("Please login!")}`);
   }
 };
 module.exports = verifyTokenAndUser;
