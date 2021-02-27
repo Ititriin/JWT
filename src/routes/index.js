@@ -8,14 +8,15 @@ const { User, Product } = require(".././models");
 const {
   renderLoginPage,
   userLogin,
+  renderIndexPage,
   renderProductsPage,
   renderRegistrationPage,
   deleteOneProductByID,
 } = require("../controllers");
 
-router.get("/", (req, res) => {
-  res.renderIndexPage("index");
-});
+//router.get("/login", renderLoginPage);
+
+router.get("/", renderIndexPage);
 
 router.post("/register", async (req, res) => {
   const usernameCheck = await User.findOne({ username: req.body.username });
