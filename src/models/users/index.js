@@ -10,7 +10,7 @@ const getUserById = (userId) => {
     const existingUsers = await User.findOne({ id }).lean();
     return existingUsers.find((user) => user.id === userId);
   } catch (error) {
-    throw new Error("Database connection failed!");
+    throw new Error("Andmebaasiühendus katkes!");
   }
 };
 
@@ -19,7 +19,7 @@ const getUserByUsername = (username) => {
     const existingUsers = await User.findOne({ username }).lean();
     return existingUsers.find((user) => user.username === username);
   } catch (error) {
-    throw new Error("Database connection failed!");
+    throw new Error("Andmebaasiühendus katkes!");
   }
 };
 
@@ -35,7 +35,7 @@ const persistUser = (username, password, email, firstname, lastname) => {
       ) === undefined;
 
     if (!isUnique) {
-      throw new Error("Given e-mail address and/or username is already taken!");
+      throw new Error("Kasutajatunnus on juba kasutusel!");
     }
     newUserID =
       existingUsers.length > 0

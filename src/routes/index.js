@@ -1,24 +1,28 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const verifyTokenAndUser = require('../middleware/verifyToken');
+const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const verifyTokenAndUser = require("../middleware/verifyToken");
 
-const { User, Product } = require('.././models');
-const { renderLoginPage, userLogin, renderProductsPage, addProduct, deleteOneProductByID } = require('../controllers');
+const { User, Product } = require(".././models");
+const {
+  renderLoginPage,
+  userLogin,
+  renderProductsPage,
+  renderRegistrationPage,
+  addProduct,
+  renderAddProductPage,
+  deleteOneProductByID,
+} = require("../controllers");
 
-router.get('/', (req, res) => {
-  res.renderIndexPage('index');
+router.get("/", (req, res) => {
+  res.renderIndexPage("index");
 });
 
-router.get('/register', (req, res) => {
-  res.renderRegistrationPage('register');
-});
-
-
-router.post('/register', async (req, res) => {
+router.post("/register", async (req, res) => {
   const usernameCheck = await User.findOne({ username: req.body.username });
-  if (usernameCheck) return res.status(400).send('Kasutajanimi on juba kasutusel!');
+  if (usernameCheck)
+    return res.status(400).send("Kasutajanimi on juba kasutusel!");
 
   const passwordHash = bcryptjs.hashSync(req.body.password);
 
@@ -31,41 +35,53 @@ router.post('/register', async (req, res) => {
   });
 
   const token = jwt.sign({ id: req.body.username }, process.env.JWT_SECRET);
-  res.cookie('jwt_token', token, { httpOnly: true });
+  res.cookie("jwt_token", token, { httpOnly: true });
 
   try {
     await registrationData.save();
-    res.redirect('/dashboard');
+    res.redirect("/dashboard");
   } catch (err) {
     res.status(400).send(err);
   }
 });
 
-router.get('/login', renderLoginPage);
-router.post('/login', userLogin);
-
-router.get('/dashboard', verifyTokenAndUser, (req, res) => {
-  res.render('dashboard');
+router.post("/addproduct", async (req, res) => {
+  const addProduct = new Product({
+    type: req.body.type,
+    productName: req.body.productName,
+    size: req.body.size,
+    sizeUnit: req.body.sizeUnit,
+    colour: req.body.colour,
+    description: req.body.description,
+    price: req.body.price,
+  });
+  try {
+    await addProduct.save();
+    res.redirect("/products");
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
-router.get('/logout', (req, res) => {
-  res.clearCookie('jwt_token');
+router.get("/login", renderLoginPage);
+router.post("/login", userLogin);
+
+router.get("/register", renderRegistrationPage);
+
+router.get('/addproduct', verifyTokenAndUser, (req, res) => {
+  res.render("addproduct");
+});
+
+router.get("/dashboard", verifyTokenAndUser, (req, res) => {
+  res.render("dashboard");
+});
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("jwt_token");
   res.redirect(`/login?message=${encodeURIComponent("Oled välja logitud!")}`);
 });
 
-
-/* router.get('/', function(req, res, next) {
-  products.exec(function(err,data){
-if(err) throw err;
-res.render('index', { title: 'Employee Records', records:data });
-  });
-  
-}); */
-
-router.get('/products', renderProductsPage);
-
-//router.post('/products', verifyTokenAndUser, addProduct);
-router.delete('/product/:id', deleteOneProductByID);
-//router.delete('/product/:id', deleteOneProductByID);
+router.get("/products", renderProductsPage);
+router.delete("/product/:id", deleteOneProductByID);
 
 module.exports = router;
