@@ -7,6 +7,18 @@
 
 <body>
     <div class="container">
+        <tr class="blank_row">
+            <td bgcolor="#FFFFFF" colspan="3">&nbsp;</td>
+        </tr>
+        <div class="text-center">
+            <a href="/register" class="btn btn-primary -5" role="button">Registreeri</a>
+            <a href="/login" class="btn btn-primary -5" role="button">Logi sisse</a>
+        </div>
+        <tr class="blank_row">
+            <td bgcolor="#FFFFFF" colspan="3">&nbsp;</td>
+        </tr>
+    </div>
+    <div class="container">
         <% if (locals.error) { %>
             <div class="alert alert-danger mt-2">
                 <strong>Registreerimine ebaõnnestus!</strong>

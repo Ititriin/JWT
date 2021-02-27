@@ -6,31 +6,43 @@
 </head>
 
 <body>
-<div class="container">
-    <% if (locals.message) { %>
-        <div class="alert alert-info mt-2">
-            <%= message %>
+    <div class="container">
+        <tr class="blank_row">
+            <td bgcolor="#FFFFFF" colspan="3">&nbsp;</td>
+        </tr>
+        <div class="text-center">
+            <a href="/register" class="btn btn-primary -5" role="button">Registreeri</a>
+            <a href="/login" class="btn btn-primary -5" role="button">Logi sisse</a>
         </div>
-    <% } %>
-    <div class="shadow p-4 mx-auto mt-4">
-        <form method="POST" action="/login">
-            <div class="form-group">
-                <label for="username">Kasutajanimi:</label>
-                <input type="text" name="username" class="form-control" placeholder="Enter username"
-                       id="login-username" value="<%= locals.username ? username : '' %>" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Salasõna:</label>
-                <input type="password" name="password" class="form-control" placeholder="Enter password"
-                       id="login-password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Logi sisse</button>
-        </form>
+        <tr class="blank_row">
+            <td bgcolor="#FFFFFF" colspan="3">&nbsp;</td>
+        </tr>
     </div>
-    <p class="text-center mt-2">Ei ole registreerunud? Registreeri end <a href="/register">siin</a>!</p>
-</div>
+    <div class="container">
+        <% if (locals.message) { %>
+            <div class="alert alert-info mt-2">
+                <%= message %>
+            </div>
+            <% } %>
+                <div class="shadow p-4 mx-auto mt-4">
+                    <form method="POST" action="/login">
+                        <div class="form-group">
+                            <label for="username">Kasutajanimi:</label>
+                            <input type="text" name="username" class="form-control" placeholder="Enter username"
+                                id="login-username" value="<%= locals.username ? username : '' %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Salasõna:</label>
+                            <input type="password" name="password" class="form-control" placeholder="Enter password"
+                                id="login-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Logi sisse</button>
+                    </form>
+                </div>
+                <p class="text-center mt-2">Ei ole registreerunud? Registreeri end <a href="/register">siin</a>!</p>
+    </div>
 
-<%- include('./partials/scripts'); %>
+    <%- include('./partials/scripts'); %>
 </body>
 
 </html>

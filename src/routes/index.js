@@ -5,20 +5,20 @@ const jwt = require('jsonwebtoken');
 const verifyTokenAndUser = require('../middleware/verifyToken');
 
 const { User, Product } = require('.././models');
-const products = Product.find({});
-const { renderLoginPage, userLogin, renderProductsPage } = require('../controllers');
+const { renderLoginPage, userLogin, renderProductsPage, addProduct, deleteOneProductByID } = require('../controllers');
 
 router.get('/', (req, res) => {
-  res.render('index');
+  res.renderIndexPage('index');
 });
 
 router.get('/register', (req, res) => {
-  res.render('register');
+  res.renderRegistrationPage('register');
 });
 
+
 router.post('/register', async (req, res) => {
-  const emailCheck = await User.findOne({ email: req.body.email });
-  if (emailCheck) return res.status(400).send('Email already in use!');
+  const usernameCheck = await User.findOne({ username: req.body.username });
+  if (usernameCheck) return res.status(400).send('Kasutajanimi on juba kasutusel!');
 
   const passwordHash = bcryptjs.hashSync(req.body.password);
 
@@ -50,21 +50,22 @@ router.get('/dashboard', verifyTokenAndUser, (req, res) => {
 
 router.get('/logout', (req, res) => {
   res.clearCookie('jwt_token');
-  res.redirect(`/login?message=${encodeURIComponent("You have been logged out!")}`);
+  res.redirect(`/login?message=${encodeURIComponent("Oled välja logitud!")}`);
 });
 
-/* router.get('/products', (req, res) => {
-  res.render('products');
-}); */
 
-router.get('/', function(req, res, next) {
+/* router.get('/', function(req, res, next) {
   products.exec(function(err,data){
 if(err) throw err;
 res.render('index', { title: 'Employee Records', records:data });
   });
   
-});
+}); */
 
 router.get('/products', renderProductsPage);
+
+//router.post('/products', verifyTokenAndUser, addProduct);
+router.delete('/product/:id', deleteOneProductByID);
+//router.delete('/product/:id', deleteOneProductByID);
 
 module.exports = router;

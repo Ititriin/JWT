@@ -1,5 +1,5 @@
 const User = require('../../models/user.model');
-const username = require('../../models/user.model');
+/* const username = require('../../models/user.model'); */
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -15,7 +15,7 @@ const userLogin = async (req, res) => {
   const user = await User.findOne({ username }).lean();
 
   if (!user) {
-    return res.redirect(`/login?message=${encodeURIComponent('Invalid username!')}&username=${encodeURIComponent(username)}`);
+    return res.redirect(`/login?message=${encodeURIComponent('Kasutajanimi või parool on vale!')}&username=${encodeURIComponent(username)}`);
   }
 
   if (bcryptjs.compareSync(password, user.password)) {
@@ -23,7 +23,7 @@ const userLogin = async (req, res) => {
     res.cookie('jwt_token', token, { httpOnly: true });
     return res.redirect('/dashboard');
   }
-  res.redirect(`/login?message=${encodeURIComponent('Invalid password!')}&password=${encodeURIComponent(username)}`);
+  res.redirect(`/login?message=${encodeURIComponent('Kasutajanimi või parool vale!')}&password=${encodeURIComponent(username)}`);
 };
 
 module.exports = {

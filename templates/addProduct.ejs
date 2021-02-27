@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head'); %>
+</head>
+
+<body>
+        <div class="container">
+        <tr class="blank_row">
+            <td bgcolor="#FFFFFF" colspan="3">&nbsp;</td>
+        </tr>
+        <div class="text-center">
+            <a href="/logout" class="btn btn-primary -5" role="button">Logi välja</a>
+            <a href="/dashboard" class="btn btn-primary -5" role="button">Home</a>
+            <a href="/products" class="btn btn-primary -5" role="button">Tooted</a>
+            <a href="/addproduct" class="btn btn-primary -5" role="button">Lisa</a>
+        </div>
+    <div class="container">
+        <% if (locals.error) { %>
+            <div class="alert alert-danger mt-2">
+                <strong>Toote lisamine ebaõnnestus!</strong>
+                <%= error %>
+            </div>
+            <% } %>
+                <div class="shadow p-4 mx-auto mt-4">
+                    <h2 class="text-left">Toote lisamise vorm</h2> 
+                    <form method="POST" action="/product">
+                        <div class="form-group">
+                            <label for="productType">Tüüp:</label>
+                            <input type="selectpicker" class="form-control" placeholder="Choose product type" id="productType"
+                                name="productType" value="<%= locals.productType ? productType : '' %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">Nimetus:</label>
+                            <input type="text" name="productName" class="form-control" placeholder="Enter product name"
+                                id="productName" value="<%= locals.productName ? productName : '' %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="size">Suurus/kogus:</label>
+                            <input type="text" name="size" class="form-control" placeholder="Enter size" id="size"
+                                value="<%= locals.size ? size : '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label for="sizeUnit">Ühik:</label>
+                            <input type="text" name="sizeUnit" class="form-control" placeholder="Enter units"
+                                id="sizeUnit" value="<%= locals.sizeUnit ? sizeUnit : '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label for="colour">Värv:</label>
+                            <input type="text" name="colour" class="form-control" placeholder="Enter product colour"
+                                id="colour">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Kirjeldus:</label>
+                            <input type="text" name="description" class="form-control" placeholder="Enter description"
+                                id="description">
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Hind:</label>
+                            <input type="number" name="price" class="form-control" placeholder="Enter price"
+                                id="price" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Lisa</button>
+                    </form>
+                </div>
+    </div>
+
+    <%- include('./partials/scripts'); %>
+</body>
+
+</html>

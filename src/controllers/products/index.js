@@ -1,24 +1,17 @@
-// const fetch = require("isomorphic-fetch");
-const request = require('request');
+const request = require("request");
 const { persistUser } = require("../../models");
 const { setTokenToCookie } = require("../../util");
+const Product = require("../../models/product.model");
 
-const renderProductsPage = (req, res) => {
-  const { firstname, lastname, email, username, error } = req.query;
+/* const renderProductsPage = (req, res) => {
   const { user } = req;
 
   if (user) {
     res.redirect("/login");
   } else {
-    /* fetch("http://localhost:3000/api/products")
-    .then((res) => res.json())
-    .then((out) => {
-      console.log("Output: ", out);
-    })
-    .catch((err) => console.error(err)); */
     const requestOptions = {
-      url: 'http://localhost:3000/api/products',
-      method: 'GET',
+      url: "http://localhost:8081/products",
+      method: "GET",
       json: {},
     };
     request(requestOptions, (err, response, body) => {
@@ -26,15 +19,21 @@ const renderProductsPage = (req, res) => {
         console.log(err);
       } else if (response.statusCode === 200) {
         console.log(body);
-        res.render("products", { title: 'Employee Records', records:body["allProducts"]});
+        res.render("/products", {
+          records: body["allProducts"],
+        });
       } else {
         console.log(response.statusCode);
       }
     });
-    //allProducts
-    //res.render("products", { title: 'Employee Records', records:[{productName: "test toode"}, {productName: "test toode2"}] });
-    //res.render("products", { title: 'Employee Records', records:body});
   }
+}; */
+
+const renderProductsPage = async (req, res) => {
+  Product.find({}).exec(function (err, data) {
+    if (err) throw err;
+    res.render('products', { records: data });
+  });
 };
 
 const registerUser = async (req, res) => {
@@ -55,32 +54,54 @@ const registerUser = async (req, res) => {
   }
 };
 
-const Product = require("../../models/product.model");
+/* const deleteProduct = async (req, res) => {
+  await Product.findByIdAndDelete(req.params.id);
+  res.redirect("/products/:id");
+}; */
 
-const addProduct = async (req, res) => {
+/* const deleteProduct = async function (req, res) {
   try {
-    await Product.create({
-      type: req.body.type,
-      productName: req.body.productName,
-      size: req.body.size,
-      sizeUnit: req.body.sizeUnit,
-      colour: req.body.colour,
-      description: req.body.description,
-      price: req.body.description,
-    });
+    const product = await Product.findByIdAndDelete({ _id: req.params.id });
+    res.status(200).json(product);
   } catch (error) {
-    res.redirect(`/products?message=${encodeURIComponent("Oops!")}`);
+    res.status(500).json({ message: error });
   }
-};
+}; */
 
-const deleteProduct = async (req, res) => {
+const deleteOneProductByID = async (req, res) => {
   await Product.findByIdAndDelete(req.params.id);
   res.redirect("/products");
 };
 
+
+/* function deleting(value) {
+  fetch("/delete", { method: "POST", data: { buttonId: value } })
+    .then(function (response) {
+      if (response.ok) {
+        console.log("Delete was recorded");
+        return;
+      }
+      throw new Error("Request failed.");
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+} */
+
+/* const db = require('../db');
+const Products = db.Products;
+
+module.exports = async function (req, res) {
+  try {
+    const product = await Products.deleteOne({ _id: req.params.id });
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+}; */
+
 module.exports = {
   renderProductsPage,
   registerUser,
-  addProduct,
-  deleteProduct,
+  deleteOneProductByID,
 };
