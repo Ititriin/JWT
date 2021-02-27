@@ -6,7 +6,7 @@
 </head>
 
 <body>
-        <div class="container">
+    <div class="container">
         <tr class="blank_row">
             <td bgcolor="#FFFFFF" colspan="3">&nbsp;</td>
         </tr>
@@ -16,57 +16,63 @@
             <a href="/products" class="btn btn-primary -5" role="button">Tooted</a>
             <a href="/addproduct" class="btn btn-primary -5" role="button">Lisa</a>
         </div>
-    <div class="container">
-        <% if (locals.error) { %>
-            <div class="alert alert-danger mt-2">
-                <strong>Toote lisamine ebaõnnestus!</strong>
-                <%= error %>
-            </div>
-            <% } %>
-                <div class="table-primary p-4 mt-4">
-                    <form method="POST" action="/addproduct">
-                        <h6>Kohustuslikud väljad toodud tärniga</h5>
-                        <div class="form-group">
-                            <label for="type">Tüüp*:</label>
-                            <input type="text" class="form-control" placeholder="Choose product type" id="type"
-                                name="type" value="<%= locals.type ? type : '' %>" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastname">Nimetus*:</label>
-                            <input type="text" name="productName" class="form-control" placeholder="Enter product name"
-                                id="productName" value="<%= locals.productName ? productName : '' %>" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="size">Suurus/kogus:</label>
-                            <input type="text" name="size" class="form-control" placeholder="Enter size" id="size"
-                                value="<%= locals.size ? size : '' %>">
-                        </div>
-                        <div class="form-group">
-                            <label for="sizeUnit">Ühik:</label>
-                            <input type="text" name="sizeUnit" class="form-control" placeholder="Enter units"
-                                id="sizeUnit" value="<%= locals.sizeUnit ? sizeUnit : '' %>">
-                        </div>
-                        <div class="form-group">
-                            <label for="colour">Värv:</label>
-                            <input type="text" name="colour" class="form-control" placeholder="Enter product colour"
-                                id="colour">
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Kirjeldus:</label>
-                            <input type="text" name="description" class="form-control" placeholder="Enter description"
-                                id="description">
-                        </div>
-                        <div class="form-group">
-                            <label for="price">Hind*:</label>
-                            <input type="number" name="price" class="form-control" placeholder="Enter price"
-                                id="price" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Lisa</button>
-                    </form>
+        <div class="container">
+            <% if (locals.error) { %>
+                <div class="alert alert-danger mt-2">
+                    <strong>Toote lisamine ebaõnnestus!</strong>
+                    <%= error %>
                 </div>
-    </div>
+                <% } %>
+                    <div class="table-primary p-4 mt-4">
+                        <form method="POST" action="/addproduct">
+                            <h6>Kohustuslikud väljad toodud tärniga</h5>
+                                <div class="form-group">
+                                    <label for="type">Tüüp*:</label>
+                                    <select name="type" class="form-control" name="type"
+                                        id="Station_Type" autocomplete="off">
 
-    <%- include('./partials/scripts'); %>
+                                        <option>TOIT</option>
+                                        <option>TARVIKUD</option>
+                                        <option>MÄNGUASJAD</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastname">Nimetus*:</label>
+                                    <input type="text" name="productName" class="form-control"
+                                        placeholder="Enter product name" id="productName"
+                                        value="<%= locals.productName ? productName : '' %>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="size">Suurus/kogus:</label>
+                                    <input type="text" name="size" class="form-control" placeholder="Enter size"
+                                        id="size" value="<%= locals.size ? size : '' %>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sizeUnit">Ühik:</label>
+                                    <input type="text" name="sizeUnit" class="form-control" placeholder="Enter units"
+                                        id="sizeUnit" value="<%= locals.sizeUnit ? sizeUnit : '' %>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="colour">Värv:</label>
+                                    <input type="text" name="colour" class="form-control"
+                                        placeholder="Enter product colour" id="colour">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Kirjeldus:</label>
+                                    <input type="text" name="description" class="form-control"
+                                        placeholder="Enter description" id="description">
+                                </div>
+                                <div class="form-group">
+                                    <label for="price">Hind*:</label>
+                                    <input type="number" name="price" class="form-control" placeholder="Enter price"
+                                        id="price" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Lisa</button>
+                        </form>
+                    </div>
+        </div>
+
+        <%- include('./partials/scripts'); %>
 </body>
 
 </html>

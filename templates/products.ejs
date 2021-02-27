@@ -14,7 +14,7 @@
             <a href="/logout" class="btn btn-primary -5" role="button">Logi välja</a>
             <a href="/dashboard" class="btn btn-primary -5" role="button">Home</a>
             <a href="/products" class="btn btn-primary -5" role="button">Tooted</a>
-            <a href="/addproduct" class="btn btn-primary -5" role="button">Uus</a>
+            <a href="/addproduct" class="btn btn-primary -5" role="button">Lisa</a>
         </div>
         <tr class="blank_row">
             <td bgcolor="#FFFFFF" colspan="3">&nbsp;</td>
@@ -61,13 +61,6 @@
                                 <%= row.price %>
                             </td>
                             <td>
-                                <!-- <form method='post' action='/delete'>
-                                    <button>
-                                        <class="os-icon os-icon-trash"
-                                            style='font-size: 16px; display: inline-block; vertical-align: middle; color: #ff1938;'>
-                                            </i><span>Delete</span>
-                                    </button>
-                                </form> -->
                                 <form action="/product/<%= row._id %>?_method=DELETE" method="POST">
                                     <button type="submit" class="os-icon os-icon-trash"
                                     style='font-size: 16px; display: inline-block; vertical-align: middle; color: #ff1938;'>Delete</button>

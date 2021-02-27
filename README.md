@@ -33,8 +33,6 @@ This is uploaded only for studying purposes.
 
 
 
-npm install --save isomorphic-fetch es6-promise
-
 npm install --save request
 
 npm install method-override
