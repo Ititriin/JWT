@@ -24,14 +24,15 @@
             </div>
             <% } %>
                 <div class="table-primary p-4 mt-4">
-                    <form method="POST" action="/product">
+                    <form method="POST" action="/addproduct">
+                        <h6>Kohustuslikud väljad toodud tärniga</h5>
                         <div class="form-group">
-                            <label for="productType">Tüüp:</label>
-                            <input type="selectpicker" class="form-control" placeholder="Choose product type" id="productType"
-                                name="productType" value="<%= locals.productType ? productType : '' %>" required>
+                            <label for="type">Tüüp*:</label>
+                            <input type="text" class="form-control" placeholder="Choose product type" id="type"
+                                name="type" value="<%= locals.type ? type : '' %>" required>
                         </div>
                         <div class="form-group">
-                            <label for="lastname">Nimetus:</label>
+                            <label for="lastname">Nimetus*:</label>
                             <input type="text" name="productName" class="form-control" placeholder="Enter product name"
                                 id="productName" value="<%= locals.productName ? productName : '' %>" required>
                         </div>
@@ -56,7 +57,7 @@
                                 id="description">
                         </div>
                         <div class="form-group">
-                            <label for="price">Hind:</label>
+                            <label for="price">Hind*:</label>
                             <input type="number" name="price" class="form-control" placeholder="Enter price"
                                 id="price" required>
                         </div>

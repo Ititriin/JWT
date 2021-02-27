@@ -10,8 +10,6 @@ const {
   userLogin,
   renderProductsPage,
   renderRegistrationPage,
-  addProduct,
-  renderAddProductPage,
   deleteOneProductByID,
 } = require("../controllers");
 
@@ -83,5 +81,9 @@ router.get("/logout", (req, res) => {
 
 router.get("/products", renderProductsPage);
 router.delete("/product/:id", deleteOneProductByID);
+
+router.get('/addproduct', verifyTokenAndUser, (req, res) => {
+  res.render("addproduct");
+});
 
 module.exports = router;

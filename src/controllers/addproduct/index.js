@@ -22,36 +22,3 @@ const addProduct = async (req, res) => {
 module.exports = {
   addProduct,
 };
-
-/* module.exports = {
-  renderAddProductPage,
-  addProduct,
-};
- */
-/* const { Product } = require("../../models");
-
-const renderAddProductPage = (req, res) => {
-  const { user } = req;
-
-  if (user) {
-      res.redirect('/dashboard');
-  } else {
-      res.render('addproduct', { firstname, lastname, email, username, error });
-  }
-};
-
-const addProduct = async (req, res) => {
-  const addProduct = new Product ({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    username: req.body.username,
-    password: passwordHash,
-  });
-  res.render(addproduct);
-};
-
-module.exports = {
-  renderAddProductPage,
-  addProduct,
-}; */
