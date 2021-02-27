@@ -14,8 +14,6 @@ const {
   deleteOneProductByID,
 } = require("../controllers");
 
-//router.get("/login", renderLoginPage);
-
 router.get("/", renderIndexPage);
 
 router.post("/register", async (req, res) => {
@@ -80,7 +78,7 @@ router.get("/logout", (req, res) => {
   res.redirect(`/login?message=${encodeURIComponent("Oled välja logitud!")}`);
 });
 
-router.get("/products", renderProductsPage);
+router.get("/products", verifyTokenAndUser, renderProductsPage);
 router.delete("/product/:id", deleteOneProductByID);
 
 router.get("/addproduct", verifyTokenAndUser, (req, res) => {
