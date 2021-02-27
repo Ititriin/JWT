@@ -1,5 +1,5 @@
-require('dotenv').config();
-const createApp = require('./src/app');
+require("dotenv").config();
+const createApp = require("./src/app");
 
 const PORT = process.env.SERVER_PORT || 8081;
 

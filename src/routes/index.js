@@ -66,7 +66,7 @@ router.post("/login", userLogin);
 
 router.get("/register", renderRegistrationPage);
 
-router.get('/addproduct', verifyTokenAndUser, (req, res) => {
+router.get("/addproduct", verifyTokenAndUser, (req, res) => {
   res.render("addproduct");
 });
 
@@ -82,7 +82,7 @@ router.get("/logout", (req, res) => {
 router.get("/products", renderProductsPage);
 router.delete("/product/:id", deleteOneProductByID);
 
-router.get('/addproduct', verifyTokenAndUser, (req, res) => {
+router.get("/addproduct", verifyTokenAndUser, (req, res) => {
   res.render("addproduct");
 });
 

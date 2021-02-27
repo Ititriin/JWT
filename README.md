@@ -29,10 +29,4 @@ npm run start:dev
 
 5. Credits 
 Thanks goes to VIKK teachers for the base template and advice. Also thanks for team TAK20. :) 
-This is uploaded only for studying purposes.
-
-
-
-npm install --save request
-
-npm install method-override
+This is uploaded for studying purposes.

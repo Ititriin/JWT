@@ -21,7 +21,7 @@
         </tr>
     </div>
     <div class="container">
-        <table class="table table-striped table-primary">
+        <table class="table">
             <thead>
                 <tr>
                     <th>TÜÜP</th>
@@ -63,8 +63,8 @@
                             <td>
                                 <form action="/product/<%= row._id %>?_method=DELETE" method="POST">
                                     <button type="submit" class="os-icon os-icon-trash"
-                                    style='font-size: 16px; display: inline-block; vertical-align: middle; color: #ff1938;'>Delete</button>
-                                  </form>
+                                        style='font-size: 16px; display: inline-block; vertical-align: middle; color: #ff1938;'>Delete</button>
+                                </form>
                             </td>
                         </tr>
                         <% })}else{ %>
