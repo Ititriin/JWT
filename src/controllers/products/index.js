@@ -1,4 +1,3 @@
-const request = require("request");
 const { persistUser } = require("../../models");
 const { setTokenToCookie } = require("../../util");
 const Product = require("../../models/product.model");
@@ -29,8 +28,9 @@ const registerUser = async (req, res) => {
 };
 
 const deleteOneProductByID = async (req, res) => {
-  await Product.findByIdAndDelete(req.params.id);
-  res.redirect("/products");
+  const productID = req.params.id;
+  await Product.findByIdAndDelete(productID);
+  res.status(202).send(`Product ${ productID } deleted!`); // Saadame HTTP 202 staatuse tagasi, et XHR päring frontendist teaks, et kustutamine läks läbi
 };
 
 module.exports = {

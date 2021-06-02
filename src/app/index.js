@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const router = require("../routes");
 const mongoose = require("mongoose");
-const methodOverride = require("method-override");
 
 const createApp = () => {
   const app = express();
@@ -22,7 +21,6 @@ const createApp = () => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(express.static(path.join(__dirname, "..", "..", "public")));
-  app.use(methodOverride("_method"));
 
   // View engine config
   app.set("view engine", "ejs");
