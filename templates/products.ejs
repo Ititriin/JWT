@@ -10,12 +10,7 @@
         <tr class="blank_row">
             <td bgcolor="#FFFFFF" colspan="3">&nbsp;</td>
         </tr>
-        <div class="text-center">
-            <a href="/logout" class="btn btn-primary -5" role="button">Logi välja</a>
-            <a href="/dashboard" class="btn btn-primary -5" role="button">Home</a>
-            <a href="/products" class="btn btn-primary -5" role="button">Tooted</a>
-            <a href="/addproduct" class="btn btn-primary -5" role="button">Lisa</a>
-        </div>
+        <%- include('./partials/nav'); %>
         <tr class="blank_row">
             <td bgcolor="#FFFFFF" colspan="3">&nbsp;</td>
         </tr>
@@ -38,7 +33,8 @@
             <tbody>
                 <%if (records.length>0){ %>
                     <% records.forEach(function(row){ %>
-                        <tr>
+                        <!-- row.id, et saaks utils.js deleteProduct funktsioonis tabeli rea dünaamiliselt eemaldada -->
+                        <tr id="<%= row._id %>">
                             <td>
                                 <%= row.type %>
                             </td>
@@ -61,10 +57,8 @@
                                 <%= row.price %>
                             </td>
                             <td>
-                                <form action="/product/<%= row._id %>?_method=DELETE" method="POST">
-                                    <button type="submit" class="os-icon os-icon-trash"
-                                        style='font-size: 16px; display: inline-block; vertical-align: middle; color: #ff1938;'>Delete</button>
-                                </form>
+                                <!-- data attribuut ja onclick meetod lisatud. handler utils.js failis -->
+                                <button type="button" class="btn btn-danger" onclick="deleteProduct(this)" data-product-id="<%= row._id %>">Delete</button>
                             </td>
                         </tr>
                         <% })}else{ %>
@@ -77,6 +71,7 @@
     </div>
 
     <%- include('./partials/scripts'); %>
+    <script src="/js/utils.js"></script>
 </body>
 
 </html>

@@ -79,7 +79,7 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/products", verifyTokenAndUser, renderProductsPage);
-router.delete("/product/:id", deleteOneProductByID);
+router.delete("/product/:id", verifyTokenAndUser, deleteOneProductByID); // verifyTokenAndUser vahevara kaitsmaks ka delete endpointi
 
 router.get("/addproduct", verifyTokenAndUser, (req, res) => {
   res.render("addproduct");
